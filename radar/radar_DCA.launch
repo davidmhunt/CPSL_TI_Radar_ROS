@@ -1,0 +1,7 @@
+<launch>
+    <node pkg="radar" type="DCA_RngAzResp.py" name="DCA_RngAzResp" respawn="false" output="screen">
+    </node>
+
+    <node pkg="radar" type="DCA_RawPacketData.py" name="DCA_RawPacketData" respawn="false" output = "screen">    
+    </node>
+</launch>
