@@ -170,6 +170,9 @@ catkin_install_python(
   scripts/DCA_RngAzResp.py
   scripts/DCA_RngAzResp_array_sub.py
   scripts/DCA_RngAzResp_img_sub.py
+  scripts/DCA_RngDopResp.py
+  scripts/DCA_RngDopResp_array_sub.py
+  scripts/DCA_RngDopResp_img_sub.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

@@ -52,6 +52,7 @@ add_message_files(
   FILES
   RngAzResp.msg
   RawPacketData.msg
+  RngDopResp.msg
 )
 
 ## Generate services in the 'srv' folder
