@@ -17,8 +17,7 @@ We provide two ROS packages to integrate with the CPSL_TI_Radar module:
 
 1. To add the two packages to the catkin workspace, perform the following commands
 ```
-cp -r radar ~/[catkin_ws]/src
-cp -r radar_msgs ~/[catkin_ws]/src
+cp -r CPSL_TI_Radar_ROS /[catkin_ws]/src/
 ```
 Here, [catkin_ws] is the path to your catkin workspace
 
@@ -62,8 +61,8 @@ source devel/setup.bash
 roscore
 ```
 
-### 2. Start Vicom Rosnodes
-1. Text to be added
+### 2. Start Vicom Rosnodes [IWR only]
+1. If you are using the IWR and want to view the generated point cloud, start the Vicom system so that the generated pointcloud has a valid reference frame
 
 ### 3. Start Radar python module
 Follow the instructions from the [CPSL_TI_Radar Repository](https://github.com/davidmhunt/TI_Radar_Demo_Visualizer) readme file to start the CPSL_TI_Radar python module. Once, the .cfg and settings.json files have been set correctly, the following command will start the CPSL_TI_Radar module
@@ -88,15 +87,7 @@ roslaunch radar start_radar_nodes.launch
 ```
 conda deactivate
 cd ~/[catkin_ws]
-source devel/setup.bash
-rosrun radar DCA_RawPacketData.py
-```
-2. Next, activate the ROS node for obtaining the normalized range-azimuth response
-```
-conda deactivate
-cd ~/[catkin_ws]
-source devel/setup.bash
-rosrun radar DCA_RngAzResp.py
+roslaunch radar radar_DCA.launch
 ```
 
 ### 5. Visualize the radar operation using RVIZ
@@ -118,8 +109,7 @@ If streaming from the DCA1000, the following rosnodes can be used to obtain/read
 ```
 conda deactivate
 cd ~/[catkin_ws]
-source devel/setup.bash
-rosrun radar DCA_RngAzResp_img_sub.py
+roslaunch radar radar_DCA_views.launch
 ```
 
 * Example node for obtaining data for normalized range azimuth response: To obtain the data corresponding to the range-azimuth response, use the following commands as a starter.
