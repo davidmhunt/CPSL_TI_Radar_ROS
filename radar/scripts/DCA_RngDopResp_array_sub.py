@@ -7,8 +7,7 @@ def callback(msg):
     arr = np.array(msg.data)
     arr = arr.reshape(
         (msg.layout.dim[0].size,
-        msg.layout.dim[1].size,
-        msg.layout.dim[2].size))
+        msg.layout.dim[1].size))
     rng_bins = msg.layout.dim[0].size
     dop_bins = msg.layout.dim[1].size
     sent_time = msg.header.stamp

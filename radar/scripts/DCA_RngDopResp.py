@@ -3,15 +3,12 @@
 #ROS modules
 import rospy
 from std_msgs.msg import Header,MultiArrayDimension
-from sensor_msgs.msg import Image
-from cv_bridge import CvBridge,CvBridgeError
 
 #custom message for publishng the range azimuth response
 from radar_msgs.msg import RngDopResp
 
 #other modules
 import numpy as np
-import cv2
 from multiprocessing.connection import Client
 
 
@@ -21,10 +18,6 @@ class RngDopRespPub:
         
         #create publishers for the array and the image
         self.array_pub = rospy.Publisher('radar/RngDopResp_Array', RngDopResp, queue_size=20)
-        self.img_pub = rospy.Publisher('radar/RngDopResp_Img',Image,queue_size=20)
-        
-        #define bridge for converting between ROS image messages and cv2 data
-        self.bridge = CvBridge()
 
         self.rate = rospy.Rate(10)
 
@@ -45,7 +38,7 @@ class RngDopRespPub:
                 self._publish_array_msg(rng_dop_resp)
 
                 #publish image message\
-                self._publish_img_msg(rng_dop_resp)
+                #self._publish_img_msg(rng_dop_resp)
 
                 #TODO: remove when finalizing implementation
                 #self.rate.sleep()
@@ -91,33 +84,6 @@ class RngDopRespPub:
 
         # Publish the message
         self.array_pub.publish(msg)
-    
-    def _publish_img_msg(self,rng_dop_resp:np.ndarray):
-        """Publish an image of the first rng_dop_resp to the img message
-
-        Args:
-            rng_dop_resp (np.ndarray): the rng_dop_resp to be published
-        """
-
-        try:
-            #correct the orientation
-            img = np.flip(rng_dop_resp)
-
-            #convert to correct format
-            img = (img * 255).astype(np.uint8)
-
-            #output a larger image
-            zoom = 5
-            img = cv2.resize(img,
-                             (img.shape[1] * zoom,
-                             img.shape[0] * zoom))
-
-            #convert to img_msg
-            img_msg = self.bridge.cv2_to_imgmsg(img,"passthrough")
-
-            self.img_pub.publish(img_msg)
-        except CvBridgeError as e:
-            print(e)
 
 
 
