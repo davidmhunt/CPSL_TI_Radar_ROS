@@ -51,7 +51,7 @@ find_package(catkin REQUIRED COMPONENTS
 add_message_files(
   FILES
   RngAzResp.msg
-  RawPacketData.msg
+  ADCDataCube.msg
   RngDopResp.msg
 )
 
