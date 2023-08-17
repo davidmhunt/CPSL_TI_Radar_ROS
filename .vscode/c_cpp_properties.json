@@ -1,0 +1,42 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/locobot/SDK_ws/devel/include/**",
+        "/opt/ros/noetic/include/**",
+        "/home/locobot/SDK_ws/src/CPSL_TI_Radar_ROS/gen_dataset/include/**",
+        "/home/locobot/SDK_ws/src/kobuki/kobuki_auto_docking/include/**",
+        "/home/locobot/SDK_ws/src/kobuki/kobuki_bumper2pc/include/**",
+        "/home/locobot/SDK_ws/src/kobuki/kobuki_controller_tutorial/include/**",
+        "/home/locobot/SDK_ws/src/kobuki_core/kobuki_dock_drive/include/**",
+        "/home/locobot/SDK_ws/src/kobuki_core/kobuki_driver/include/**",
+        "/home/locobot/SDK_ws/src/kobuki_core/kobuki_ftdi/include/**",
+        "/home/locobot/SDK_ws/src/kobuki/kobuki_keyop/include/**",
+        "/home/locobot/SDK_ws/src/kobuki/kobuki_node/include/**",
+        "/home/locobot/SDK_ws/src/kobuki/kobuki_random_walker/include/**",
+        "/home/locobot/SDK_ws/src/kobuki/kobuki_safety_controller/include/**",
+        "/home/locobot/SDK_ws/src/CPSL_TI_Radar_ROS/radar/include/**",
+        "/home/locobot/SDK_ws/src/CPSL_TI_Radar_ROS/radar_msgs/include/**",
+        "/home/locobot/SDK_ws/src/sync_data_py/include/**",
+        "/home/locobot/SDK_ws/src/velodyne/velodyne_driver/include/**",
+        "/home/locobot/SDK_ws/src/velodyne/velodyne_laserscan/include/**",
+        "/home/locobot/SDK_ws/src/velodyne/velodyne_pcl/include/**",
+        "/home/locobot/SDK_ws/src/velodyne/velodyne_pointcloud/include/**",
+        "/home/locobot/SDK_ws/src/yujin_ocs/yocs_cmd_vel_mux/include/**",
+        "/home/locobot/SDK_ws/src/yujin_ocs/yocs_controllers/include/**",
+        "/home/locobot/SDK_ws/src/yujin_ocs/yocs_velocity_smoother/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}
