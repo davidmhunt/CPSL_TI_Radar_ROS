@@ -12,10 +12,10 @@ class DualTopicListener:
     def __init__(self):
         # Initialize subscribers 
         self.subscriber_lidar = rospy.Subscriber("velodyne_points", PointCloud2, self.update_latest_lidar, queue_size=10)
-        self.subscriber_radar = rospy.Subscriber("radar/RawPacketData_Array", RngAzResp, self.update_latest_radar, queue_size=10)
+        self.subscriber_radar = rospy.Subscriber("radar/RawPacketData_Array", RawPacketData, self.update_latest_radar, queue_size=10)
         
         # Use a timer to implement the desired frequency
-        rospy.Timer(rospy.Duration(0.5), self.timer_callback)  # 2 Hz
+        rospy.Timer(rospy.Duration(0.5), self.save_latest_radar_lidar)  # 2 Hz
         
         # Variables to store the latest data from the topics
         self.latest_data_lidar:PointCloud2 = None
@@ -89,6 +89,6 @@ class DualTopicListener:
         
 
 if __name__ == '__main__':
-    rospy.init_node('dual_topic_listener', anonymous=True)
+    rospy.init_node('dataset_generator', anonymous=True)
     listener = DualTopicListener()
     rospy.spin()
