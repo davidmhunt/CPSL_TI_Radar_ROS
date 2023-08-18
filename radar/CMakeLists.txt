@@ -165,8 +165,8 @@ catkin_install_python(
   PROGRAMS
   scripts/radar_IWRDemo.py
   scripts/radar_static_transform.py
-  scripts/DCA_RawPacketData.py
-  scripts/DCA_RawPacketData_sub.py
+  scripts/DCA_ADCDataCube.py
+  scripts/DCA_ADCDataCube_sub.py
   scripts/DCA_RngAzResp.py
   scripts/DCA_RngAzResp_array_sub.py
   scripts/DCA_RngAzResp_img_sub.py

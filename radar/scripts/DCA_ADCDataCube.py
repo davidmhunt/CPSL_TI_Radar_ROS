@@ -66,10 +66,10 @@ class ADCDataCubePub():
         msg.header = header
 
         #package real part of the data
-        msg.real_data = adc_data_cube.real.flatten().tolist()
+        msg.real_data = adc_data_cube.real.astype(np.int16).flatten().tolist()
 
         #package complex part of the data
-        msg.complex_data = adc_data_cube.imag.flatten().tolist()
+        msg.imag_data = adc_data_cube.imag.astype(np.int16).flatten().tolist()
 
         #define the layout
         msg.layout.dim.append(MultiArrayDimension())

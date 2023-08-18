@@ -12,7 +12,7 @@ def callback(msg):
     )
 
     #get the real data
-    imag_data = np.array(msg.complex_data)
+    imag_data = np.array(msg.imag_data)
     imag_data = imag_data.reshape(
         (msg.layout.dim[0].size,
          msg.layout.dim[1].size,
@@ -21,9 +21,9 @@ def callback(msg):
 
     data = real_data + 1j * imag_data
 
-    rx_channels = msg.layout.dim[0]
-    samples_per_chirp = msg.layout.dim[1]
-    chirps_per_frame = msg.layout.dim[2]
+    rx_channels = msg.layout.dim[0].size
+    samples_per_chirp = msg.layout.dim[1].size
+    chirps_per_frame = msg.layout.dim[2].size
 
     sent_time = msg.header.stamp
     
