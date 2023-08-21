@@ -26,7 +26,7 @@ class DualTopicListener:
         self.radar_data_folder = "radar"
         self.lidar_data_folder = "lidar"
         self.save_file_name = "frame"
-        self.sample_idx = 0
+        self.sample_idx = 10000 #start off on frame 1000 so that frames have the same numbering
 
     def update_latest_lidar(self, data):
         self.latest_data_lidar = data
