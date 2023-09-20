@@ -1,0 +1,53 @@
+############
+#kobuki
+############
+roslaunch kobuki_node minimal.launch --screen
+
+roslaunch kobuki_keyop keyop.launch 
+
+############
+#vicon
+############
+roslaunch vicon_bridge vicon.launch 
+
+rostopic echo /vicon/kobuki/kobuki
+
+
+############
+#lidar
+############roslaunch velodyne_pointcloud VLP16_points.launch
+
+############
+#radar
+############
+
+#terminal 1
+cd CPSL_TI_Radar/CPSL_TI_Radar
+conda activate TI_Radar_GUI
+poetry run python run_radar.py 
+
+#terminal 2
+roslaunch radar radar_DCA_RadCloud.launch
+
+#terminal 3
+cd radar-dev
+conda activate radar-dev
+poetry run python run_realtime_model.py
+
+#terminal 4
+rosrun radar transform_map.py (or transform_drone.py)
+
+#terminal 5
+rosrun rviz rviz
+#then locate the config in CPSL_TI_Radar_ROS/rviz_map.rviz
+
+#terminal 6 - only if launching views
+roslaunch radar radar_DCA_views.launch
+
+#generate dataset - only if generating a dataset
+rosrun dataset_generator dataset_generator.py
+
+https://github.com/yujinrobot/kobuki/issues/382
+
+roslaunch web_video_server web_video.launch
+http://192.168.0.103:8080/stream_viewer?topic=/usb_cam/image_raw

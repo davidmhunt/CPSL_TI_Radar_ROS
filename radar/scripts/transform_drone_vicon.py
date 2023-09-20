@@ -18,7 +18,7 @@ from multiprocessing.connection import Client
 def init_radar_static_frame():
 
     #create a ROS node
-    rospy.init_node('radar_reference_frame',anonymous=True)
+    rospy.init_node('radar/transform_drone_vicon',anonymous=True)
 
     #create a static transform broadcaster
     broadcaster = tf2_ros.StaticTransformBroadcaster()
