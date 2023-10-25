@@ -163,6 +163,7 @@ include_directories(
 ## in contrast to setup.py, you can choose the destination
 catkin_install_python(PROGRAMS
   scripts/dataset_generator.py
+  scripts/dataset_generator_radar_only.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
