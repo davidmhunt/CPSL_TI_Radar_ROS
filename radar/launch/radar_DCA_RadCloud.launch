@@ -1,0 +1,13 @@
+<launch>
+    <node pkg="radar" type="DCA_RngAzResp.py" name="DCA_RngAzResp" respawn="false" output="screen">
+    </node>
+
+    <node pkg="radar" type="DCA_ADCDataCube.py" name="DCA_ADCDataCube" respawn="false" output = "screen">    
+    </node>
+
+    <node pkg="radar" type="DCA_RngDopResp.py" name="DCA_RngDopResp" respawn="false" output = "screen">    
+    </node>
+
+    <node pkg="radar" type="DCA_PointCloud.py" name="DCA_PointCloud" respawn="false" output = "screen">    
+    </node>
+</launch>
