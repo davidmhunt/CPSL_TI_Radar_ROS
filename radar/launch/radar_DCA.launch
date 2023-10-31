@@ -7,4 +7,7 @@
 
     <node pkg="radar" type="DCA_RngDopResp.py" name="DCA_RngDopResp" respawn="false" output = "screen">    
     </node>
+
+    <node pkg="radar" type="DCA_MultiPath.py" name="DCA_MultiPath" respawn="false" output = "screen">    
+    </node>
 </launch>

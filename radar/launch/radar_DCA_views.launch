@@ -4,4 +4,7 @@
 
     <node pkg="radar" type="DCA_RngDopResp_img_sub.py" name="DCA_RngDopResp_Img" respawn="false" output = "screen">    
     </node>
+
+    <node pkg="radar" type="DCA_MultiPath_img_sub.py" name="DCA_MultiPath_Img" respawn="false" output = "screen">    
+    </node>
 </launch>

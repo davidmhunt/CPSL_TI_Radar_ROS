@@ -1,8 +1,9 @@
+#!/usr/bin/python3
 import sys
 import rospy
 import cv2
 import numpy as np
-from radar_msgs.msg import RngAzResp
+from radar_msgs.msg import RngDopResp
 
 def callback(msg):
     
@@ -10,34 +11,35 @@ def callback(msg):
     arr = np.array(msg.data)
     arr = arr.reshape(
         (msg.layout.dim[0].size,
-        msg.layout.dim[1].size,
-        msg.layout.dim[2].size))
+        msg.layout.dim[1].size))
     rng_bins = msg.layout.dim[0].size
     az_bins = msg.layout.dim[1].size
-    chirps = msg.layout.dim[2].size
     sent_time = msg.header.stamp
 
-    #generate and display the image
-    img = np.flip(arr[:,:,0],axis=0)
+    #generate the image
+    #correct the orientation
+    img = np.flip(arr,axis=0)
 
     #convert to correct format
     img = (img * 255).astype(np.uint8)
 
+    #output a larger image
     zoom = 5
     img = cv2.resize(img,
-                             (img.shape[1] * zoom,
-                             img.shape[0] * zoom))
+                        (img.shape[1] * zoom,
+                        img.shape[0] * zoom))
     
-    #display the image
-    cv2.imshow("RngAzResp",img)
+    #show the image
+    cv2.imshow("MultiPath",img)
+
     cv2.waitKey(1)
     
 
 def subscriber():
     
-    sub = rospy.Subscriber('radar/RngAzResp_Array',RngAzResp,callback)
+    sub = rospy.Subscriber('radar/MultiPath_Array',RngDopResp,callback)
 
-    rospy.init_node('DCA_RngAzResp_img_sub',anonymous=True)
+    rospy.init_node('DCA_MultiPath_img_sub',anonymous=True)
 
     rospy.spin()
       
