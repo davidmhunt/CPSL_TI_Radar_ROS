@@ -15,7 +15,7 @@ class DualTopicListener:
         self.subscriber_radar = rospy.Subscriber("radar/ADCDataCube_Array", ADCDataCube, self.update_latest_radar, queue_size=10)
         
         # Use a timer to implement the desired frequency
-        rospy.Timer(rospy.Duration(0.1), self.save_latest_radar_lidar)  # 2 Hz
+        rospy.Timer(rospy.Duration(0.05), self.save_latest_radar_lidar)  # 2 Hz
         
         # Variables to store the latest data from the topics
         self.latest_data_lidar:PointCloud2 = None

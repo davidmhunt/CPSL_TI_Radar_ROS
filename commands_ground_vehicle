@@ -15,7 +15,8 @@ rostopic echo /vicon/kobuki/kobuki
 
 ############
 #lidar
-############roslaunch velodyne_pointcloud VLP16_points.launch
+############
+roslaunch velodyne_pointcloud VLP16_points.launch
 
 ############
 #radar
@@ -23,13 +24,14 @@ rostopic echo /vicon/kobuki/kobuki
 
 #terminal 1
 cd CPSL_TI_Radar/CPSL_TI_Radar
-conda activate TI_Radar_GUI
+poetry run pytest
 poetry run python run_radar.py 
 
 #terminal 2
-roslaunch radar radar_DCA_RadCloud.launch
+roslaunch radar radar_DCA_RadCloud.launch #if running model
+roslaunch radar radar_DCA.launch #if no model running
 
-#terminal 3
+#terminal 3 - only if running model
 cd radar-dev
 conda activate radar-dev
 poetry run python run_realtime_model.py
