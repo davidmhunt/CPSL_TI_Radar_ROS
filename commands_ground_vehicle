@@ -1,14 +1,14 @@
 ############
 #kobuki
 ############
-roslaunch kobuki_node minimal.launch --screen
+roslaunch kobuki_node minimal.launch --screen # first terminal (top left)
 
-roslaunch kobuki_keyop keyop.launch 
+roslaunch kobuki_keyop keyop.launch # second terminal (top row)
 
 ############
-#vicon
+#vicon - camera cage setup (no need if not in cage)
 ############
-roslaunch vicon_bridge vicon.launch 
+roslaunch vicon_bridge vicon.launch
 
 rostopic echo /vicon/kobuki/kobuki
 
@@ -16,7 +16,7 @@ rostopic echo /vicon/kobuki/kobuki
 ############
 #lidar
 ############
-roslaunch velodyne_pointcloud VLP16_points.launch
+roslaunch velodyne_pointcloud VLP16_points.launch # launching lidar (top)
 
 ############
 #radar
@@ -47,6 +47,8 @@ rosrun rviz rviz
 roslaunch radar radar_DCA_views.launch
 
 #generate dataset - only if generating a dataset
+# first to create lidar and radar folders
+# make sure to generate the data folders first (radar, lidar, scene folders to hold)
 rosrun dataset_generator dataset_generator.py
 
 https://github.com/yujinrobot/kobuki/issues/382
