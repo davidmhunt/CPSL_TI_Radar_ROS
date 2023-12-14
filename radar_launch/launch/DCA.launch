@@ -1,0 +1,6 @@
+<launch>
+    <arg name="config_file" default="single_radar.json"/>
+    <node pkg="radar_connect" type="DCA.py" name="DCA" output = "screen">
+        <param name="config_path" value="$(find radar_launch)/configs/$(arg config_file)"/>
+    </node>
+</launch>

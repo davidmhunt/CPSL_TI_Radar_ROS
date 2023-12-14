@@ -1,0 +1,7 @@
+<launch>
+    <arg name="views" default="false"/>
+    <arg name="config_file" default="single_radar.json"/>
+    <include file="$(find radar_launch)/launch/DCA.launch" pass_all_args="true"/>
+    <include file="$(find radar_launch)/launch/sig_processing.launch" pass_all_args="true"/>
+    <include file="$(find radar_launch)/launch/views.launch" pass_all_args="true" if="$(arg views)"/>
+</launch>
