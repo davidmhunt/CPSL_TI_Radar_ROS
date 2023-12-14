@@ -1,0 +1,14 @@
+{
+    "radars":[
+        {
+            "ADC_cube":6001,
+            "rang_az_resp":6002,
+            "rang_dop_resp":6003
+        },
+        {
+            "ADC_cube":6011,
+            "rang_az_resp":6012,
+            "rang_dop_resp":6013
+        }
+    ]
+}

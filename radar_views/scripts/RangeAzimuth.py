@@ -87,7 +87,7 @@ class RangeDopplerResponseView():
         )
         
         #display the image
-        cv2.imshow("Radar {}: Range Azimuth Response".format(radar_idx),img)
+        cv2.imshow("Radar_{}_RngAz".format(radar_idx),img)
         cv2.waitKey(1)
   
       

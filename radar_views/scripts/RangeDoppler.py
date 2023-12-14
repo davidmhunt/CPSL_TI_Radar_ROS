@@ -86,7 +86,7 @@ class RangeDopplerResponseView():
         )
         
         #display the image
-        cv2.imshow("Radar {}: Range Doppler Response".format(radar_idx),img)
+        cv2.imshow("Radar_{}_RngDop".format(radar_idx),img)
         cv2.waitKey(1)
   
       
