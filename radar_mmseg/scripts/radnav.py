@@ -71,7 +71,7 @@ class RadNav():
         #wait for a new connection
         for i in range(len(radar_configs)):
             if self.compute_only_on != -1 and (i != self.compute_only_on):
-                self.range_az_subs.append(None)
+                self._rad_nav_model_conns.append(None)
             else:
                 rad_nav_model_addr = (
                     "localhost",
