@@ -1,0 +1,10 @@
+<launch>
+    <arg name="compute_only_on" default="0"/>
+    <arg name="config_file" default="single_radar.json"/>
+    <node pkg="radar_mmseg" type="radnav.py" name="RadNav" output = "screen">
+        <param name="config_path" value="$(find radar_launch)/configs/$(arg config_file)"/>
+        <param name="compute_only_on" value="$(arg compute_only_on)"/>
+    </node>
+    <node pkg="radar_views" type="transform_map.py" name="transform_map" output = "screen">
+    </node>
+</launch>

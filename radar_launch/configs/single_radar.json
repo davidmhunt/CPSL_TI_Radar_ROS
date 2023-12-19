@@ -3,7 +3,8 @@
         {
             "ADC_cube":6001,
             "rang_az_resp":6002,
-            "rang_dop_resp":6003
+            "rang_dop_resp":6003,
+            "rad_nav_model":6004
         }
     ]
 }
