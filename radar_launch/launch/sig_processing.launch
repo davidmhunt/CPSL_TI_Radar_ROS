@@ -1,0 +1,9 @@
+<launch>
+    <arg name="config_file" default="single_radar.json"/>
+    <node pkg="radar_sig_processing" type="RangeDoppler.py" name="RangeDoppler" output = "screen">
+        <param name="config_path" value="$(find radar_launch)/configs/$(arg config_file)"/>
+    </node>
+    <node pkg="radar_sig_processing" type="RangeAzimuth.py" name="RangeAzimuth" output = "screen">
+        <param name="config_path" value="$(find radar_launch)/configs/$(arg config_file)"/>
+    </node>
+</launch>

@@ -1,0 +1,35 @@
+############
+#kobuki - terminal 1
+############
+roslaunch kobuki_node minimal.launch --screen
+
+############
+#kobuki - terminal 2
+############
+
+roslaunch kobuki_keyop keyop.launch # second terminal (top row)
+
+############
+#lidar -terminal 3
+############
+roslaunch velodyne_pointcloud VLP16_points.launch
+
+############
+#radar - terminal 4
+############
+
+cd CPSL_TI_Radar/CPSL_TI_Radar
+poetry run pytest
+poetry run python run_radar.py --json_config radar_1.json
+
+############
+#rad-nav - terminal 5
+############
+cd rad-nav
+poetry run python run_realtime.py
+
+############
+#ROS nodes for rad-nav - terminal 6
+############
+
+roslaunch radar_launch radar_run.launch views:=true view_only:=0 radnav:=true config_file:=single_radar.json

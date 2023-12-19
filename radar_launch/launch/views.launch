@@ -1,0 +1,16 @@
+<launch>
+    <arg name="view_only" default="-1"/>
+    <arg name="show_rviz" default="true"/>
+    <arg name="config_file" default="single_radar.json"/>
+    <node pkg="radar_views" type="RangeDoppler.py" name="RangeDopplerView" output = "screen">
+        <param name="config_path" value="$(find radar_launch)/configs/$(arg config_file)"/>
+        <param name="view_only" value="$(arg view_only)"/>
+    </node>
+    <node pkg="radar_views" type="RangeAzimuth.py" name="RangeAzimuthView" output = "screen">
+        <param name="config_path" value="$(find radar_launch)/configs/$(arg config_file)"/>
+        <param name="view_only" value="$(arg view_only)"/>
+    </node>
+    <node pkg="rviz" type="rviz" name="rviz" output="screen"
+        args = "-d $(find radar_launch)/configs_rviz/rviz_map.rviz"
+        if="$(arg show_rviz)"/>
+</launch>

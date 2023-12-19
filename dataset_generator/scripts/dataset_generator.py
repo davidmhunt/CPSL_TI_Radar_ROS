@@ -59,7 +59,7 @@ class DualTopicListener:
                 msg.layout.dim[2].size)
             )
 
-            #get the real data
+            #get the imag data
             imag_data = np.array(msg.imag_data)
             imag_data = imag_data.reshape(
                 (msg.layout.dim[0].size,
