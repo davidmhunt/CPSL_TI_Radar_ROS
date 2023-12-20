@@ -1,0 +1,19 @@
+<launch>
+    <arg name="config_file" default="single_radar.json"/>
+    <arg name="radar_only" default="false"/>
+    <arg name="dataset_path" default="/home/locobot/data"/>
+    <arg name="frame_rate" default="20"/>
+    <include file="$(find radar_launch)/launch/DCA.launch">
+        <arg name="config_file" value="$(arg config_file)"/>
+    </include>
+    <include file="$(find radar_launch)/launch/sig_processing.launch">
+        <arg name="config_file" value="$(arg config_file)"/>
+    </include>
+    <include file="$(find radar_launch)/launch/generate_dataset.launch">
+        <arg name="config_file" vlaue="$(arg config_file)"/>
+        <arg name="radar_only" value="$(arg radar_only)"/>
+        <arg name="dataset_path" value="$(arg dataset_path)"/>
+        <arg name="frame_rate" default="$(frame_rate)"/>
+    </include>
+    <include file="$(find velodyne_pointcloud)/launch/VLP16_points.launch"/>
+</launch>
