@@ -1,9 +1,9 @@
 <launch>
-    <arg name="config_file" default="single_radar.json"/>
+    <arg name="config_file" default="IWR6843ISK.json"/>
     <arg name="radar_only" default="false"/>
     <arg name="dataset_path" default="/home/locobot/data"/>
     <arg name="frame_rate" default="20"/>
-    <node pkg="radar_datasets" type="dataset_generator.py" name="dataset_generator" output = "screen">
+    <node pkg="radar_datasets" type="IWR6843ISK.py" name="dataset_generator" output = "screen">
         <param name="config_path" value="$(find radar_launch)/configs/$(arg config_file)"/>
         <param name="radar_only" value="$(arg radar_only)"/>
         <param name="dataset_path" value="$(arg dataset_path)"/>

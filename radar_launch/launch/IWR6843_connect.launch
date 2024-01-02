@@ -1,0 +1,6 @@
+<launch>
+    <arg name="config_file" default="IWR6843ISK.json"/>
+    <node pkg="radar_connect" type="IWR6843ISK.py" name="IWR6843ISK" output = "screen">
+        <param name="config_path" value="$(find radar_launch)/configs/$(arg config_file)"/>
+    </node>
+</launch>

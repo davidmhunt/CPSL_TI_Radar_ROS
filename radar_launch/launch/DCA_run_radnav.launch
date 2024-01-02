@@ -4,18 +4,18 @@
     <arg name="radnav" default="false"/>
     <arg name="compute_only_on" default="0"/>
     <arg name="config_file" default="single_radar.json"/>
-    <include file="$(find radar_launch)/launch/DCA.launch">
+    <include file="$(find radar_launch)/launch/DCA_connect.launch">
         <arg name="config_file" value="$(arg config_file)"/>
     </include>
-    <include file="$(find radar_launch)/launch/sig_processing.launch">
+    <include file="$(find radar_launch)/launch/DCA_sig_processing.launch">
         <arg name="config_file" value="$(arg config_file)"/>
     </include>
-    <include file="$(find radar_launch)/launch/views.launch" if="$(arg views)">
+    <include file="$(find radar_launch)/launch/DCA_views.launch" if="$(arg views)">
         <arg name="config_file" value="$(arg config_file)"/>
         <arg name="show_rviz" value="$(arg radnav)"/>
         <arg name="view_only" default="$(arg view_only)"/>
     </include>
-    <include file="$(find radar_launch)/launch/radnav.launch" if="$(arg radnav)">
+    <include file="$(find radar_launch)/launch/DCA_radnav.launch" if="$(arg radnav)">
         <arg name="config_file" value="$(arg config_file)"/>
         <arg name="compute_only_on" default="$(arg compute_only_on)"/>
     </include>

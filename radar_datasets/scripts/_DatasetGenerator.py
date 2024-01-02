@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 #ROS modules
 import rospy
 from std_msgs.msg import Header,MultiArrayDimension
@@ -12,7 +10,7 @@ import numpy as np
 import json
 import os
 
-class DatasetGenerator():
+class _DatasetGenerator():
 
     def __init__(self):
 
@@ -43,17 +41,18 @@ class DatasetGenerator():
 
 
         #initialize the subscriber for the adc data cubes
-        self.adc_cube_subs = []
-        self.adc_cube_latest = []
-        self.adc_cube_subs_init()
+        self.radar_data_subs = []
+        self.radar_data_latest = []
+        self.radar_data_subs_init()
 
         #initialize the subscriber for the lidar data
-        self.lidar_data_latest:PointCloud2 = None
-        self.lidar_data_sub = rospy.Subscriber(
-            "velodyne_points", 
-            PointCloud2, 
-            self.lidar_data_callback,
-            queue_size=10)
+        if not self.radar_only:
+            self.lidar_data_latest:PointCloud2 = None
+            self.lidar_data_sub = rospy.Subscriber(
+                "velodyne_points", 
+                PointCloud2, 
+                self.lidar_data_callback,
+                queue_size=10)
         
         
 
@@ -125,24 +124,15 @@ class DatasetGenerator():
             self.radar_data_folders.append(folder_name)
 
 #subscribers to the ADC cube message
-    def adc_cube_subs_init(self):
+    def radar_data_subs_init(self):
+        """Function to initialize the radar data subscribers
+        Initialized by the child classes
+        """
+        pass
 
-        radar_configs = self.config["radars"]
-
-        for i in range(len(radar_configs)):
-            self.adc_cube_subs.append(
-                rospy.Subscriber(
-                    "radar_{}/ADCDataCube/Array".format(i),
-                    ADCDataCube,
-                    self.adc_cube_sub_callback,
-                    callback_args=(i))
-            )
-
-            self.adc_cube_latest.append(None) #initialize an empty message
-
-    def adc_cube_sub_callback(self,msg,radar_idx):
+    def radar_data_sub_callback(self,msg,radar_idx):
         
-        self.adc_cube_latest[radar_idx] = msg
+        self.radar_data_latest[radar_idx] = msg
         return
     
 #subscribers to the lidar message
@@ -161,7 +151,7 @@ class DatasetGenerator():
                 self.lidar_data_save_to_file()
 
             #save the radar data
-            self.adc_cube_save_to_file()
+            self.radar_data_save_to_file()
 
             self.sample_idx += 1
 
@@ -175,8 +165,8 @@ class DatasetGenerator():
         if (not self.radar_only) and self.lidar_data_latest is None:
             return False
         
-        for i in range(len(self.adc_cube_latest)):
-            if self.adc_cube_latest[i] is None:
+        for i in range(len(self.radar_data_latest)):
+            if self.radar_data_latest[i] is None:
                 return False
         
             else:
@@ -200,52 +190,20 @@ class DatasetGenerator():
         out_status = "Saved Lidar Point Cloud: points: {}, time: {}".format(np.shape(point_cloud)[0],sent_time)
         rospy.loginfo(out_status)
 
-    def adc_cube_save_to_file(self):
-
-        file_name = "{}_{}.npy".format(self.save_file_name,self.sample_idx)
-
-        for i in range(len(self.radar_data_folders)):
-
-            folder = self.radar_data_folders[i]
-            msg = self.adc_cube_latest[i]
-
-            #get the real data
-            real_data = np.array(msg.real_data)
-            real_data = real_data.reshape(
-                (msg.layout.dim[0].size,
-                msg.layout.dim[1].size,
-                msg.layout.dim[2].size)
-            )
-
-            #get the imag data
-            imag_data = np.array(msg.imag_data)
-            imag_data = imag_data.reshape(
-                (msg.layout.dim[0].size,
-                msg.layout.dim[1].size,
-                msg.layout.dim[2].size)
-            )
-
-            data = real_data + 1j * imag_data
-
-            path = os.path.join(self.dataset_path,folder,file_name)
-            np.save(path,data)
-
-            # log receiving the array
-            rx_channels = msg.layout.dim[0].size
-            samples_per_chirp = msg.layout.dim[1].size
-            chirps_per_frame = msg.layout.dim[2].size
-            sent_time = msg.header.stamp
-
-            out_status = "Received ADCDataCube from radar {}: rx channels: {}, samples: {}, chirps: {}, time: {}".format(i,rx_channels,samples_per_chirp,chirps_per_frame,sent_time)
-            rospy.loginfo(out_status)
-def main():
-    rospy.init_node('RadNav',anonymous=True)
-    
-    try:
-        rad_nav_node = DatasetGenerator()
-        rospy.spin()
-    except rospy.ROSInterruptException:
+    def radar_data_save_to_file(self):
+        """Function to save the latest radar data message to a file
+        Defined by child class
+        """
         pass
 
-if __name__ == '__main__':
-    main()
+# def main():
+#     rospy.init_node('RadNav',anonymous=True)
+    
+#     try:
+#         rad_nav_node = _DatasetGenerator()
+#         rospy.spin()
+#     except rospy.ROSInterruptException:
+#         pass
+
+# if __name__ == '__main__':
+#     main()

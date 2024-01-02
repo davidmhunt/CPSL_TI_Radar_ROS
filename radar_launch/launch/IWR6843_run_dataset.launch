@@ -1,0 +1,18 @@
+<launch>
+    <arg name="config_file" default="IWR6843ISK.json"/>
+    <arg name="radar_only" default="false"/>
+    <arg name="dataset_path" default="/home/locobot/data"/>
+    <arg name="frame_rate" default="20"/>
+    <arg name="views" default="false"/>
+    <include file="$(find radar_launch)/launch/IWR6843_connect.launch">
+        <arg name="config_file" value="$(arg config_file)"/>
+    </include>
+    <include file="$(find velodyne_pointcloud)/launch/VLP16_points.launch" unless="$(arg radar_only)"/>
+    <include file="$(find radar_launch)/launch/IWR6843_views.launch" if="$(arg views)"/>
+    <include file="$(find radar_launch)/launch/IWR6843_dataset.launch">
+        <arg name="config_file" value="$(arg config_file)"/>
+        <arg name="radar_only" value="$(arg radar_only)"/>
+        <arg name="dataset_path" value="$(arg dataset_path)"/>
+        <arg name="frame_rate" value="$(arg frame_rate)"/>
+    </include>
+</launch>

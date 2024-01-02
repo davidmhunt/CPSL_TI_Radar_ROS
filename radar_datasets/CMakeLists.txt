@@ -162,7 +162,8 @@ include_directories(
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
 catkin_install_python(PROGRAMS
-  scripts/dataset_generator.py
+  scripts/DCA.py
+  scripts/IWR6843ISK.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

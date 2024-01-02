@@ -1,0 +1,6 @@
+<launch>
+    <node pkg="radar_views" type="transform_map.py" name="transformMap" output = "screen">
+    </node>
+    <node pkg="rviz" type="rviz" name="rviz" output="screen"
+        args = "-d $(find radar_launch)/configs_rviz/rviz_6843.rviz"/>
+</launch>
