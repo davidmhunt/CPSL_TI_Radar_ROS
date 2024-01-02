@@ -10,7 +10,7 @@ Prior to running any of this code in ROS, setup and install the CPSL_TI_Radar py
 ### 2. Install ROS
 1. Follow the instructions on the [ROS installation instructions](http://wiki.ros.org/noetic/Installation) website to install ROS. If you are unfamiliar with ROS, its worth taking some of the [ROS Tutorials](http://wiki.ros.org/ROS/Tutorials)
 
-## Adding radar and radar_msgs packages to catkin workspace
+## Adding CPSL_TI_Radar_ROS packages to catkin workspace
 We provide several ROS packages to integrate with the CPSL_TI_Radar module:
 * radar_connect: a ROS package that handles connecting to the CPSL_TI_Radar and receiving/publishing the raw ADC datacube from the radar
 * radar_datasets: a ROS package designed to capture time synchronized radar and lidar data from multiple radar units.
@@ -87,7 +87,7 @@ Depending on which streaming method is being used, the ROS nodes can be started 
 conda deactivate
 cd ~/[catkin_ws]
 source devel/setup.bash
-roslaunch radar start_radar_nodes.launch
+roslaunch radar_launch IWR6843_run_dataset.launch
 ```
 
 #### Option 2: Streaming from DCA1000:
@@ -95,43 +95,5 @@ roslaunch radar start_radar_nodes.launch
 ```
 conda deactivate
 cd ~/[catkin_ws]
-roslaunch radar radar_DCA.launch
-```
-
-### 5. Visualize the radar operation using RVIZ
-Depending on the streaming method being used, the following methods can be used to visualize the data from the Radar in ROS
-
-#### Option 1: Streaming from IWR (i.e: no DCA1000)
-1. To visualize the environment and the radar data, use rviz which can be launched using 
-```
-conda deactivate
-rosrun rviz rviz
-```
-If you get an error, make sure that conda is deactivated as sometimes it will cause errors
-2. To visualize the scene, we have implemented a simple rviz setup which can be loaded using the "rviz_config.rviz" file. The vicom system visualizations and reference frames must be set for this to work correctly 
-
-#### Option 2: Streaming from DCA1000:
-If streaming from the DCA1000, the following rosnodes can be used to obtain/read the data:
-
-* Visualizing normalized range azimuth response: To view the range-azimuth response in real time, run the following commands:
-```
-conda deactivate
-cd ~/[catkin_ws]
-roslaunch radar radar_DCA_views.launch
-```
-
-* Example node for obtaining data for normalized range azimuth response: To obtain the data corresponding to the range-azimuth response, use the following commands as a starter.
-```
-conda deactivate
-cd ~/[catkin_ws]
-source devel/setup.bash
-rosrun radar DCA_RngAzResp_array_sub.py
-```
-
-* Example node for obtaining raw packets: To obtain the data corresponding to the range-azimuth response, use the following commands as a starter.
-```
-conda deactivate
-cd ~/[catkin_ws]
-source devel/setup.bash
-rosrun radar DCA_RawPacketData_sub.py
+roslaunch radar_launch DCA_run_radnav.launch
 ```
