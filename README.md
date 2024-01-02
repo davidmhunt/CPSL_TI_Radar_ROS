@@ -11,13 +11,20 @@ Prior to running any of this code in ROS, setup and install the CPSL_TI_Radar py
 1. Follow the instructions on the [ROS installation instructions](http://wiki.ros.org/noetic/Installation) website to install ROS. If you are unfamiliar with ROS, its worth taking some of the [ROS Tutorials](http://wiki.ros.org/ROS/Tutorials)
 
 ## Adding radar and radar_msgs packages to catkin workspace
-We provide two ROS packages to integrate with the CPSL_TI_Radar module:
-* radar: a set of ROS nodes that integrate connect to the radar module and convert it into ROS formats
-* radar_msgs: a set of custom messages used when streaming data from the DCA1000 board. 
+We provide several ROS packages to integrate with the CPSL_TI_Radar module:
+* radar_connect: a ROS package that handles connecting to the CPSL_TI_Radar and receiving/publishing the raw ADC datacube from the radar
+* radar_datasets: a ROS package designed to capture time synchronized radar and lidar data from multiple radar units.
+* radar_mmseg: a ROS package designed to integrate with radnav models (which use mmsegmentation) to generate 2d point clouds from the radar's range-azimuth response
+* radar_msgs: a ROS package defining custom messages used for topics on the adc data cube, range azimuth response, range doppler response, and the processed radar point cloud
+* radar_sig_processing: a set of ROS packages used for receiving the range doppler and range azimuth responses from the CPSL_TI_Radar module
+* radar_views: a ROS pacakge used for viewing the range-azimuth and range-doppler responses in windows. Additionally includes functionality for viewing the rad-nav model's output in rviz.
+* (archived) radar: a previous set of ROS nodes for integrating with the CPSL_TI_Radar module for the ICRA paper
+* (archived) dataset_generator: a previous ros package used for generating datasets of time synchronized radar and lidar data
 
 1. To add the two packages to the catkin workspace, perform the following commands
 ```
-cp -r CPSL_TI_Radar_ROS /[catkin_ws]/src/
+cd [catkin_ws]/src/
+git clone https://github.com/davidmhunt/CPSL_TI_Radar_ROS.git
 ```
 Here, [catkin_ws] is the path to your catkin workspace
 
@@ -31,6 +38,7 @@ catkin_make
 ```
 source devel/setup.bash
 ```
+
 
 ## Setting up Code [IWR Streaming only]
 If streaming from the IWR directly (i.e: no DCA1000), the following steps must be taken to correctly specify the reference frame of the streamed point cloud
