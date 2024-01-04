@@ -22,7 +22,8 @@ class _DatasetGenerator():
             rospy.loginfo("could not find config at {}".format(config_path))
             return
         #determine if recording a dataset for radar+lidar or radar only
-        self.radar_only = rospy.get_param('~radar_only',default=False)
+        self.radar_enable = rospy.get_param('~radar_enable',default=True)
+        self.lidar_enable = rospy.get_param('~lidar_enable',default=True)
         
         #determine the dataset path
         self.dataset_path = rospy.get_param('~dataset_path',default="/home/locobot/data")
@@ -30,23 +31,24 @@ class _DatasetGenerator():
         self.lidar_data_folder = "lidar"
         self.save_file_name = "frame"
         self.sample_idx = 10000 #start at frame 10000
-        self.init_radar_lidar_data_folders()
+        self.init_data_folders()
 
         #implement a timer for sampling data at the latest frequency (defaults to 50ms)
         frame_rate = float(rospy.get_param('~frame_rate',default=20))
         rospy.Timer(
             rospy.Duration(1/frame_rate),
-            self.save_latest_radar_lidar
+            self.save_latest_data
         )
 
 
         #initialize the subscriber for the radar data
-        self.radar_data_subs = []
-        self.radar_data_latest = []
-        self.radar_data_subs_init()
+        if self.radar_enable:
+            self.radar_data_subs = []
+            self.radar_data_latest = []
+            self.radar_data_subs_init()
 
         #initialize the subscriber for the lidar data
-        if not self.radar_only:
+        if self.lidar_enable:
             self.lidar_data_latest:PointCloud2 = None
             self.lidar_data_sub = rospy.Subscriber(
                 "velodyne_points", 
@@ -105,23 +107,24 @@ class _DatasetGenerator():
             os.makedirs(path)
         return
     
-    def init_radar_lidar_data_folders(self):
+    def init_data_folders(self):
 
         #initialize the lidar data folder
-        if not self.radar_only:
+        if self.lidar_enable:
             path = os.path.join(self.dataset_path,self.lidar_data_folder)
             self.check_for_directory(path,clear_contents=True)
 
         #initialize the radar data folders
-        for i in range(len(self.config["radars"])):
-            folder_name = "radar_{}".format(i)
-            
-            #create/clear the dataset folder
-            path = os.path.join(self.dataset_path,folder_name)
-            self.check_for_directory(path,clear_contents=True)
+        if self.radar_enable:
+            for i in range(len(self.config["radars"])):
+                folder_name = "radar_{}".format(i)
+                
+                #create/clear the dataset folder
+                path = os.path.join(self.dataset_path,folder_name)
+                self.check_for_directory(path,clear_contents=True)
 
-            #append the folder name
-            self.radar_data_folders.append(folder_name)
+                #append the folder name
+                self.radar_data_folders.append(folder_name)
 
 #subscribers to the ADC cube message
     def radar_data_subs_init(self):
@@ -142,16 +145,17 @@ class _DatasetGenerator():
         return
 
 #saving the data to a file
-    def save_latest_radar_lidar(self,event):
+    def save_latest_data(self,event):
         
         if self.check_latest_data():
 
             #save the lidar data
-            if not self.radar_only:
+            if self.lidar_enable:
                 self.lidar_data_save_to_file()
 
             #save the radar data
-            self.radar_data_save_to_file()
+            if self.radar_enable:
+                self.radar_data_save_to_file()
 
             self.sample_idx += 1
 
@@ -162,15 +166,16 @@ class _DatasetGenerator():
     def check_latest_data(self):
 
         #check lidar data valid
-        if (not self.radar_only) and self.lidar_data_latest is None:
+        if self.lidar_enable and self.lidar_data_latest is None:
             return False
         
-        for i in range(len(self.radar_data_latest)):
-            if self.radar_data_latest[i] is None:
-                return False
+        if self.radar_enable:
+            for i in range(len(self.radar_data_latest)):
+                if self.radar_data_latest[i] is None:
+                    return False
         
-            else:
-                return True
+        #only if everything checks do we return True
+        return True
         
     def lidar_data_save_to_file(self):
 
