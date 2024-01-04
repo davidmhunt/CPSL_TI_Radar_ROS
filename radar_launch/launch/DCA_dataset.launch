@@ -2,12 +2,14 @@
     <arg name="config_file" default="single_radar.json"/>
     <arg name="radar_enable" default="true"/>
     <arg name="lidar_enable" default="true"/>
+    <arg name="camera_enable" default="true"/>
     <arg name="dataset_path" default="/home/locobot/data"/>
     <arg name="frame_rate" default="20"/>
     <node pkg="radar_datasets" type="DCA1000.py" name="DCA1000_DatasetGenerator" output = "screen">
         <param name="config_path" value="$(find radar_launch)/configs/$(arg config_file)"/>
         <param name="radar_enable" value="$(arg radar_enable)"/>
         <param name="lidar_enable" value="$(arg lidar_enable)"/>
+        <param name="camera_enable" value="$(arg camera_enable)"/>
         <param name="dataset_path" value="$(arg dataset_path)"/>
         <param name="frame_rate" value="$(arg frame_rate)"/>
     </node>

@@ -1,9 +1,11 @@
 #ROS modules
 import rospy
 from std_msgs.msg import Header,MultiArrayDimension
-from sensor_msgs.msg import PointCloud2
+from sensor_msgs.msg import PointCloud2,Image
 import sensor_msgs.point_cloud2 as pc2
 from radar_msgs.msg import ADCDataCube
+from cv_bridge import CvBridge
+import cv2
 
 #other modules
 import numpy as np
@@ -24,11 +26,13 @@ class _DatasetGenerator():
         #determine if recording a dataset for radar+lidar or radar only
         self.radar_enable = rospy.get_param('~radar_enable',default=True)
         self.lidar_enable = rospy.get_param('~lidar_enable',default=True)
-        
+        self.camera_enable = rospy.get_param('~camera_enable',default=False)
+
         #determine the dataset path
         self.dataset_path = rospy.get_param('~dataset_path',default="/home/locobot/data")
         self.radar_data_folders = []
         self.lidar_data_folder = "lidar"
+        self.camera_data_folder = "camera"
         self.save_file_name = "frame"
         self.sample_idx = 10000 #start at frame 10000
         self.init_data_folders()
@@ -39,7 +43,6 @@ class _DatasetGenerator():
             rospy.Duration(1/frame_rate),
             self.save_latest_data
         )
-
 
         #initialize the subscriber for the radar data
         if self.radar_enable:
@@ -55,6 +58,15 @@ class _DatasetGenerator():
                 PointCloud2, 
                 self.lidar_data_callback,
                 queue_size=10)
+        
+        if self.camera_enable:
+            self.camera_data_latest = None
+            self.camera_data_sub = rospy.Subscriber(
+                "/usb_cam/image_raw",
+                Image,
+                self.camera_data_callback,
+                queue_size=10
+            )
         
         
 
@@ -114,6 +126,10 @@ class _DatasetGenerator():
             path = os.path.join(self.dataset_path,self.lidar_data_folder)
             self.check_for_directory(path,clear_contents=True)
 
+        if self.camera_enable:
+            path = os.path.join(self.dataset_path,self.camera_data_folder)
+            self.check_for_directory(path,clear_contents=True)
+
         #initialize the radar data folders
         if self.radar_enable:
             for i in range(len(self.config["radars"])):
@@ -143,6 +159,10 @@ class _DatasetGenerator():
 
         self.lidar_data_latest = msg
         return
+    
+    def camera_data_callback(self,msg:Image):
+        
+        self.camera_data_latest = msg
 
 #saving the data to a file
     def save_latest_data(self,event):
@@ -152,6 +172,10 @@ class _DatasetGenerator():
             #save the lidar data
             if self.lidar_enable:
                 self.lidar_data_save_to_file()
+
+            #save the camera data
+            if self.camera_enable:
+                self.camera_data_save_to_file()
 
             #save the radar data
             if self.radar_enable:
@@ -169,6 +193,9 @@ class _DatasetGenerator():
         if self.lidar_enable and self.lidar_data_latest is None:
             return False
         
+        if self.camera_enable and self.camera_data_latest is None:
+            return False
+
         if self.radar_enable:
             for i in range(len(self.radar_data_latest)):
                 if self.radar_data_latest[i] is None:
@@ -194,6 +221,23 @@ class _DatasetGenerator():
         # log receiving the array
         out_status = "Saved Lidar Point Cloud: points: {}, time: {}".format(np.shape(point_cloud)[0],sent_time)
         rospy.loginfo(out_status)
+
+    def camera_data_save_to_file(self):
+
+        #get the latest camera data message
+        msg = self.camera_data_latest
+
+        #convert to numpy array
+        bridge = CvBridge()
+        cv_image = bridge.imgmsg_to_cv2(msg,desired_encoding="passthrough")
+
+        file_name = "{}_{}.png".format(self.save_file_name,self.sample_idx)
+        path = os.path.join(self.dataset_path,self.camera_data_folder,file_name)
+        cv2.imwrite(path,cv_image)
+
+        out_status = "Saved Camera Frame"
+        rospy.loginfo(out_status)
+
 
     def radar_data_save_to_file(self):
         """Function to save the latest radar data message to a file
