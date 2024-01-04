@@ -1,0 +1,8 @@
+<launch>
+    <arg name="config_file" default="IWR6843ISK.json"/>
+    <arg name="views" default="true"/>
+    <include file="$(find radar_launch)/launch/IWR6843_connect.launch">
+        <arg name="config_file" value="$(arg config_file)"/>
+    </include>
+    <include file="$(find radar_launch)/launch/IWR6843_views.launch" if="$(arg views)"/>
+</launch>

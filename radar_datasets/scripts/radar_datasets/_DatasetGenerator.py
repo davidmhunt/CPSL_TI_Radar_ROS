@@ -40,7 +40,7 @@ class _DatasetGenerator():
         )
 
 
-        #initialize the subscriber for the adc data cubes
+        #initialize the subscriber for the radar data
         self.radar_data_subs = []
         self.radar_data_latest = []
         self.radar_data_subs_init()
@@ -195,15 +195,3 @@ class _DatasetGenerator():
         Defined by child class
         """
         pass
-
-# def main():
-#     rospy.init_node('RadNav',anonymous=True)
-    
-#     try:
-#         rad_nav_node = _DatasetGenerator()
-#         rospy.spin()
-#     except rospy.ROSInterruptException:
-#         pass
-
-# if __name__ == '__main__':
-#     main()
