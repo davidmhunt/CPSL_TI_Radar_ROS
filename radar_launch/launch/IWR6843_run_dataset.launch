@@ -6,7 +6,7 @@
     <arg name="dataset_path" default="/home/locobot/data"/>
     <arg name="frame_rate" default="20"/>
     <arg name="views" default="false"/>
-    <include file="$(find radar_launch)/launch/IWR6843_connect.launch" if="(arg radar_enable)">
+    <include file="$(find radar_launch)/launch/IWR6843_connect.launch" if="$(arg radar_enable)">
         <arg name="config_file" value="$(arg config_file)"/>
     </include>
     <include file="$(find velodyne_pointcloud)/launch/VLP16_points.launch" if="$(arg lidar_enable)"/>
